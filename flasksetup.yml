@@ -1,0 +1,23 @@
+---
+- name: setup an instance to run flask
+  hosts: all
+  gather_facts: False
+  
+  pre_tasks:
+    - name: install python 2
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+  tasks:
+    - name: install apache
+      apt:
+        name: apache2
+        state: present
+    - name: clone flask repo
+      git:
+        repo: 'https://github.com/ahouyang/ansible-flask.git'
+        dest: /home/ubuntu/
+    - name: move hw0.html to apache root
+      copy: 
+        remote_src: yes
+        src: /home/ubuntu/ansible-flask/FlaskApp.conf
+        dest: /etc/apache2/sites-available/
+

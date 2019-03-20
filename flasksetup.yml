@@ -1,6 +1,7 @@
 ---
 - name: setup an instance to run flask
   hosts: all
+  become: True
   gather_facts: False
   
   pre_tasks:

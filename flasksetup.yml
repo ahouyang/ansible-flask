@@ -1,34 +1,38 @@
 ---
 - name: setup an instance to run flask
-  hosts: all
+  hosts: flask
   become: True
   gather_facts: False
   
   pre_tasks:
     - name: install python 2
       raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    - name: install python setuptools
+      raw: sudo apt-get install -y python-setuptools
+    - name: install pip
+      raw: sudo apt install python-pip
   tasks:
     - name: install apache
       apt:
         name: apache2
         state: present
     - name: install mod_wsgi
-      raw: sudo apt-get install libapache2-mod-wsgi python-dev
+      raw: sudo apt-get -y install libapache2-mod-wsgi python-dev
     - name: enable mod_wsgi
       raw: sudo a2enmod wsgi 
     - name: clone flask repo
       git:
         repo: 'https://github.com/ahouyang/ansible-flask.git'
-        dest: /var/www/FlaskApp
+        dest: /var/www/FlaskApp/FlaskApp
     - name: move FlaskApp.conf to apache sites-available folder
       copy: 
         remote_src: yes
-        src: /var/www/FlaskApp/ansible-flask/setup/FlaskApp.conf
+        src: /var/www/FlaskApp/FlaskApp/setup/FlaskApp.conf
         dest: /etc/apache2/sites-available/
     - name: move flaskapp.wsgi to correct location
       copy: 
         remote_src: yes
-        src: /var/www/FlaskApp/ansible-flask/setup/flaskapp.wsgi
+        src: /var/www/FlaskApp/FlaskApp/setup/flaskapp.wsgi
         dest: /var/www/FlaskApp/
     - name: copy git repo to FlaskApp/
       copy: 

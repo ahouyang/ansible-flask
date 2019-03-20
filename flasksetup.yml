@@ -14,10 +14,15 @@
     - name: clone flask repo
       git:
         repo: 'https://github.com/ahouyang/ansible-flask.git'
-        dest: /home/ubuntu/
-    - name: move hw0.html to apache root
+        dest: /var/www/FlaskApp
+    - name: move FlaskApp.conf to apache sites-available folder
       copy: 
         remote_src: yes
-        src: /home/ubuntu/ansible-flask/FlaskApp.conf
+        src: /var/www/FlaskApp/ansible-flask/setup/FlaskApp.conf
         dest: /etc/apache2/sites-available/
-
+    - name: move flaskapp.wsgi to correct location
+      copy: 
+        remote_src: yes
+        src: /var/www/FlaskApp/ansible-flask/setup/flaskapp.wsgi
+        dest: /var/www/FlaskApp/
+      

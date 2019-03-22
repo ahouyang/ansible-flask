@@ -10,7 +10,7 @@
     - name: install python setuptools
       raw: sudo apt-get install -y python-setuptools
     - name: install pip
-      raw: sudo apt install python-pip
+      raw: sudo apt install -y python-pip
   tasks:
     - name: install apache
       apt:
@@ -34,11 +34,6 @@
         remote_src: yes
         src: /var/www/FlaskApp/FlaskApp/setup/flaskapp.wsgi
         dest: /var/www/FlaskApp/
-    - name: copy git repo to FlaskApp/
-      copy: 
-        remote_src: yes
-        src: /var/www/FlaskApp/ansible-flask/
-        dest: /var/www/FlaskApp/FlaskApp/
     - pip:
         name:
           - flask
